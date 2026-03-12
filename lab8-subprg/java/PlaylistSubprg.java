@@ -167,9 +167,19 @@ public class PlaylistSubprg {
      * @param playlist
      * @param result
      */
-    public static void getPlaylistLength_CopyInCopyOutPassing(List<Item> playlist, FloatHolder result,
-            FloatHolder resultNoAds) {
-        // TASK 2b: complete this method, simulating copy-in/copy-out parameter passing
+   public static void getPlaylistLength_CopyInCopyOutPassing(List playlist, FloatHolder result, FloatHolder resultNoAds) {
+     // TASK 2b: complete this method, simulating copy-in/copy-out parameter passing
+     float temp1 = result.x;
+     float temp2 = resultNoAds.x;
+     for (Item item : playlist) {
+       temp1 = temp1 + item.length_secs;
+       if (!(item instanceof Advert)) {
+         temp2 = temp2 + item.length_secs;
+       }
+     }
+     result.x = temp1;
+     resultNoAds.x = temp2;
+  }
 
 
 
@@ -231,10 +241,12 @@ public class PlaylistSubprg {
         System.out.println();
 
         PlaylistProgress progress = new PlaylistProgress(playlist1);
-        while (true) {        //TASK 1c: Modify this loop to handle the EndOfPlaylist exception
+        while (true) { //TASK 1c: Modify this loop to handle the EndOfPlaylist exception
+        try {
             float remainingLength = progress.getRemainingLength();
             System.out.printf("Next item = %s \n", progress.getNextItem());
-            System.out.printf("  remaining play time = %.2f \n", remainingLength);
-        }
+            System.out.printf(" remaining play time = %.2f \n", remainingLength);
+        } catch (PlaylistProgress.EndOfPlaylist e) { 
+            break;
     }
 }
